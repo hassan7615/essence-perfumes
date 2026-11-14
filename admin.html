@@ -367,6 +367,43 @@ body.dark .tab.active{background:var(--ea-gold)!important}
   .tabs{flex-direction:column}
   .stat{min-width:calc(50% - 8px)!important}
 }
+
+/* ---- order cards (compact) ---- */
+.orders{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(340px,1fr))!important;gap:16px!important}
+.order{display:flex;flex-direction:column;gap:12px;padding:18px!important}
+.order p{margin:4px 0}
+.ea-order-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding-bottom:12px;border-bottom:1px solid var(--ea-line)}
+.ea-order-title h3{margin:0;font-family:"El Messiri",serif;font-size:19px;color:var(--ea-ink)}
+.ea-order-title small{display:block;color:var(--ea-muted);font-size:13px;margin-top:2px}
+.status-badge{white-space:nowrap;font-size:13px;font-weight:700;background:#eef3ee;color:#2f6a45}
+.ea-st-pending{background:#fff3dc!important;color:#8a5a10!important}
+.ea-st-processing{background:#e8f0fb!important;color:#24508a!important}
+.ea-st-shipped{background:#e6f4ea!important;color:#226b3d!important}
+.status-badge.cancelled{background:#fbe8e6!important;color:#a33a2a!important}
+.ea-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;margin:0}
+.ea-meta-row{min-width:0}
+.ea-meta-row.ea-wide{grid-column:1/-1}
+.ea-meta dt{font-size:12px;color:var(--ea-muted)}
+.ea-meta dd{margin:0;font-weight:500;color:var(--ea-ink);overflow-wrap:anywhere}
+.ea-meta .ea-ltr dd{direction:ltr;text-align:right}
+.order .products{background:var(--ea-soft)!important;border:1px solid var(--ea-line)!important;border-radius:14px!important;padding:12px 14px!important;margin:0!important}
+.order .products>strong{display:block;font-size:13px;color:var(--ea-muted);margin-bottom:6px}
+.order .product-line{display:grid!important;grid-template-columns:1fr auto;grid-template-areas:"n t" "q t";gap:0 10px;padding:8px 0!important;border-bottom:1px dashed var(--ea-line)!important}
+.order .product-line .product-name{grid-area:n;font-weight:600}
+.order .product-line .ea-qty{grid-area:q;font-size:13px;color:var(--ea-muted)}
+.order .product-line .ea-line-total{grid-area:t;align-self:center;font-weight:700}
+.ea-sum{margin-top:8px}
+.ea-sum-row{display:flex;justify-content:space-between;font-size:14px;padding:3px 0;color:var(--ea-muted)}
+.ea-sum-row.ea-disc{color:#2f7a4f}
+.ea-sum-row.ea-total{color:var(--ea-ink);font-weight:700;font-size:16px;border-top:1px solid var(--ea-line);margin-top:4px;padding-top:8px}
+.order label{margin:0!important;font-size:13px;color:var(--ea-muted)}
+.order label select{margin-top:4px}
+.order button{width:100%}
+.order .cancel-button{background:transparent!important;color:var(--ea-bad)!important;border:1px solid #e9c2bb!important}
+.order .cancel-button:hover:not(:disabled){background:#fbe8e6!important;transform:none}
+body.dark .order .cancel-button{border-color:#6b2f26!important}
+body.dark .status-badge{filter:brightness(.92)}
+@media(max-width:600px){.orders{grid-template-columns:1fr!important}.ea-meta{grid-template-columns:1fr}}
 </style>
 </head>
 
@@ -807,7 +844,7 @@ const statuses={
 };
 
 const money=n=>
-  `${Number(n??0).toLocaleString('ar-SA',{
+  `${Number(n??0).toLocaleString('ar-SA-u-nu-latn',{
     maximumFractionDigits:2
   })} ر.س`;
 
@@ -1237,46 +1274,45 @@ async function loadOrders(){
       /* حالة الطلب محفوظة لاستخدامها في التصفية */
       card.dataset.status=o.status||'';
 
-      const info=[
-        ['h3','📦 طلب '+code],
-        ['p','العميل: '+(o.customer_name||'—')],
-        ['p','الجوال: '+(o.customer_phone||'—')],
-        ['p','المدينة: '+(o.city||'—')],
-        ['p','العنوان: '+(o.address||'—')],
-        ['p','الإجمالي: '+money(o.total_amount)],
-        ['p','الشحن: '+money(o.shipping_fee)],
-        ['p','التاريخ: '+(
+      /* رأس البطاقة: رقم الطلب + الحالة + التاريخ */
+      const head=el('div',undefined,'ea-order-head');
+      const title=el('div',undefined,'ea-order-title');
+      title.append(
+        el('h3','طلب '+code),
+        el('small',
           o.created_at
-            ?new Date(o.created_at).toLocaleString('ar-SA')
+            ?new Date(o.created_at).toLocaleString('ar-SA-u-nu-latn',{dateStyle:'medium',timeStyle:'short'})
             :'—'
-        )]
-      ];
-
-      for(const [tag,value] of info){
-        card.append(el(tag,value));
-      }
-
-      if(Number(o.discount_amount)>0){
-        card.append(
-          el('p','🎟️ الكوبون: '+(o.coupon_code||'—'))
-        );
-        card.append(
-          el('p','قيمة الخصم: '+money(o.discount_amount))
-        );
-      }
-
-      card.append(
+        )
+      );
+      head.append(
+        title,
         el(
           'span',
           statuses[o.status]||o.status,
-          'status-badge'+(
+          'status-badge ea-st-'+(o.status||'x')+(
             o.status==='cancelled'?' cancelled':''
           )
         )
       );
+      card.append(head);
 
+      /* بيانات العميل */
+      const meta=el('dl',undefined,'ea-meta');
+      const addMeta=(k,v,cls)=>{
+        const row=el('div',undefined,'ea-meta-row'+(cls?' '+cls:''));
+        row.append(el('dt',k),el('dd',v));
+        meta.append(row);
+      };
+      addMeta('العميل',o.customer_name||'—');
+      addMeta('الجوال',o.customer_phone||'—','ea-ltr');
+      addMeta('المدينة',o.city||'—');
+      addMeta('العنوان',o.address||'—','ea-wide');
+      card.append(meta);
+
+      /* المنتجات */
       const box=el('div',undefined,'products');
-      box.append(el('strong','🛍️ المنتجات:'));
+      box.append(el('strong','المنتجات'));
 
       const rows=byOrder.get(o.id)||[];
 
@@ -1297,20 +1333,31 @@ async function loadOrders(){
         line.append(
           el(
             'div',
-            '🌿 '+(
-              productNames.get(
-                String(item.product_id).toLowerCase()
-              )||item.product_id||'منتج غير معروف'
-            ),
+            productNames.get(
+              String(item.product_id).toLowerCase()
+            )||item.product_id||'منتج غير معروف',
             'product-name'
           ),
-          el('div','الكمية: '+q),
-          el('div','سعر الوحدة: '+money(price)),
-          el('div','إجمالي المنتج: '+money(q*price))
+          el('div',q+' × '+money(price),'ea-qty'),
+          el('div',money(q*price),'ea-line-total')
         );
 
         box.append(line);
       }
+
+      /* الملخص المالي */
+      const sum=el('div',undefined,'ea-sum');
+      const addSum=(k,v,cls)=>{
+        const r=el('div',undefined,'ea-sum-row'+(cls?' '+cls:''));
+        r.append(el('span',k),el('span',v));
+        sum.append(r);
+      };
+      addSum('الشحن',money(o.shipping_fee));
+      if(Number(o.discount_amount)>0){
+        addSum('الخصم ('+(o.coupon_code||'—')+')','− '+money(o.discount_amount),'ea-disc');
+      }
+      addSum('الإجمالي',money(o.total_amount),'ea-total');
+      box.append(sum);
 
       card.append(box);
 
