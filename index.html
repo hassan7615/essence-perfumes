@@ -1425,15 +1425,19 @@ header.es-header nav a:hover{background:var(--es-soft)!important;color:var(--es-
 .categories a{background:var(--es-surface)!important;color:var(--es-ink)!important;border:1px solid var(--es-line)!important;border-radius:999px!important;padding:10px 26px!important;font-weight:500;text-decoration:none}
 .categories a:hover{background:var(--es-deep)!important;color:#f7efe3!important;border-color:var(--es-deep)!important}
 .category-block{text-align:right;margin-top:56px}
-.category-block h3{font-family:"El Messiri",serif;color:var(--es-ink)!important;font-size:clamp(24px,2.6vw,32px)!important;display:flex;align-items:center;gap:16px;margin:0}
-.category-block h3::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--es-gold-2))}
+.category-block > h3{font-family:"El Messiri",serif;color:var(--es-ink)!important;font-size:clamp(24px,2.6vw,32px)!important;display:flex;align-items:center;gap:16px;margin:0}
+.category-block > h3::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--es-gold-2))}
 .category-block .note{color:var(--es-muted)!important;margin:6px 0 22px}
 .grid,.category-block .grid{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(230px,1fr))!important;gap:clamp(14px,2vw,26px)!important}
 .card{background:var(--es-surface)!important;border:1px solid var(--es-line)!important;border-radius:var(--es-radius)!important;box-shadow:none!important;padding:12px 12px 16px!important;text-align:right;display:flex;flex-direction:column;transition:box-shadow .35s,transform .35s,border-color .35s!important;transform:none!important}
 .card:hover{box-shadow:var(--es-shadow)!important;border-color:var(--es-gold-2)!important;transform:translateY(-4px)!important}
-.card .product-image,.card .bottle{width:100%;aspect-ratio:1/1;height:auto!important;object-fit:cover!important;border-radius:12px!important;background:var(--es-soft)!important;transform:none!important;cursor:pointer}
+.card{perspective:900px}
+.card .product-image,.card .bottle{width:100%;aspect-ratio:1/1;height:auto!important;object-fit:cover!important;border-radius:12px!important;background:var(--es-soft)!important;cursor:pointer;filter:saturate(1.06) contrast(1.04);transform:rotateX(var(--glass-rx,0deg)) rotateY(var(--glass-ry,0deg)) scale(var(--glass-scale,1))!important;transform-style:preserve-3d;transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s!important;box-shadow:0 0 0 rgba(0,0,0,0)}
+.card:hover .product-image,.card.glass-active .product-image{box-shadow:0 22px 34px -18px rgba(42,33,27,.55)}
+.card.glass-active .product-image,.card.glass-active .bottle{transition:transform .08s linear!important}
 .card .bottle{display:grid;place-items:center;font-size:48px;color:var(--es-gold)}
-.card h3{font-family:"El Messiri",serif;font-size:18px;color:var(--es-ink)!important;margin:14px 4px 4px;font-weight:600}
+.category-block .card h3,.card h3{font-family:"El Messiri",serif;font-size:19px!important;line-height:1.4;color:var(--es-ink)!important;margin:14px 4px 4px;font-weight:600;display:block}
+.category-block .card h3::after{content:none}
 .card .product-desc{color:var(--es-muted)!important;font-size:14px;line-height:1.7;margin:0 4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:3.4em}
 .price,.card .price{color:var(--es-gold)!important;font-weight:700;font-size:19px;margin:12px 4px!important}
 .card .card-bottom{margin-top:auto;display:grid!important;grid-template-columns:1fr 1fr;gap:8px}
@@ -1496,6 +1500,16 @@ header.es-header nav a:hover{background:var(--es-soft)!important;color:var(--es-
 .alreef-chat-form input{background:#fff!important;color:var(--es-ink)!important;border:1px solid var(--es-line)!important}
 .alreef-assistant a{color:var(--es-gold)!important}
 .alreef-assistant{z-index:130!important}
+.es-policies{padding:clamp(48px,7vw,90px) clamp(16px,6vw,96px);background:var(--es-surface);border-block:1px solid var(--es-line)}
+.es-pol-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;max-width:1300px;margin:0 auto}
+.es-pol{display:block;text-decoration:none;background:var(--es-bg);border:1px solid var(--es-line);border-radius:var(--es-radius);padding:20px 22px;transition:border-color .3s,transform .3s,box-shadow .3s}
+.es-pol:hover{border-color:var(--es-gold-2);transform:translateY(-3px);box-shadow:var(--es-shadow)}
+.es-pol strong{display:block;font-family:"El Messiri",serif;font-size:19px;color:var(--es-ink);margin-bottom:4px}
+.es-pol span{color:var(--es-muted);font-size:14px;line-height:1.7}
+.es-pol-more{text-align:center;margin:22px 0 0}
+.es-pol-more a{color:var(--es-gold);font-weight:500;text-decoration:none}
+@media(max-width:1024px){.es-pol-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.es-pol-grid{grid-template-columns:1fr}}
 .alreef-assistant-launcher,.cart{z-index:60!important}
 
 /* responsive */
@@ -1540,7 +1554,7 @@ header.es-header nav a:hover{background:var(--es-soft)!important;color:var(--es-
 @media(max-width:360px){
   .grid,.category-block .grid{grid-template-columns:1fr!important}
 }
-@media(prefers-reduced-motion:reduce){.es-tile-img,.es-hero-frame img,.card{transition:none!important}}
+@media(prefers-reduced-motion:reduce){.es-tile-img,.es-hero-frame img,.card{transition:none!important}.card .product-image,.card .bottle{transform:none!important}}
 </style>
 </head>
 
@@ -1711,230 +1725,18 @@ header.es-header nav a:hover{background:var(--es-soft)!important;color:var(--es-
      POLICIES
 ======================================== -->
 
-<section class="store-policies" id="policies">
-
-  <h2>سياسات متجر عطور إيسانس</h2>
-
-  <div class="policy-box" id="shipping-policy">
-
-    <h3>🚚 سياسة الشحن والتوصيل</h3>
-
-    <p>
-      يسعدنا في متجر عطور إيسانس تقديم خدمات
-      التوصيل إلى مختلف مناطق المملكة العربية السعودية.
-    </p>
-
-    <h4>مدينة نجران ومحافظاتها</h4>
-
-    <p>
-      يتم توصيل الطلبات عن طريق مندوب خاص
-      خلال 24 ساعة من تأكيد الطلب.
-    </p>
-
-    <p>رسوم التوصيل: 25 ريال سعودي.</p>
-
-    <h4>باقي مناطق المملكة</h4>
-
-    <p>
-      يتم شحن الطلبات عن طريق شركات الشحن،
-      وتستغرق عملية التوصيل من 4 إلى 6 أيام.
-    </p>
-
-    <p>رسوم الشحن: 30 ريال سعودي.</p>
-
-    <h4>الشحن المجاني</h4>
-
-    <p>
-      نوفر شحنًا مجانيًا للطلبات التي تبلغ
-      قيمتها 300 ريال سعودي أو أكثر.
-    </p>
-
-    <p>
-      ملاحظة: أوقات التوصيل تقديرية،
-      وقد تتأثر بالإجازات الرسمية أو الظروف
-      الخارجة عن إرادتنا.
-    </p>
-
+<section class="es-policies" id="policies" aria-labelledby="esPolTitle">
+  <div class="es-head">
+    <span class="es-eyebrow">خدمة العملاء</span>
+    <h2 id="esPolTitle">تسوّق بثقة</h2>
   </div>
-
-  <div class="policy-box" id="return-policy">
-
-    <h3>↩️ سياسة الاستبدال والاسترجاع</h3>
-
-    <p>
-      يحرص متجر عطور إيسانس على رضا العملاء
-      وتقديم منتجات عالية الجودة.
-    </p>
-
-    <p>
-      يمكن طلب الاستبدال أو الاسترجاع
-      خلال 7 أيام من تاريخ استلام الطلب،
-      وفق الشروط التالية:
-    </p>
-
-    <ul>
-      <li>أن يكون المنتج بحالته الأصلية.</li>
-      <li>ألا يكون المنتج مستخدمًا أو متضررًا بسبب العميل.</li>
-      <li>الاحتفاظ بالتغليف الأصلي وملحقات المنتج قدر الإمكان.</li>
-      <li>التواصل مع خدمة العملاء لتقديم طلب الاستبدال أو الاسترجاع.</li>
-    </ul>
-
-    <h4>المنتجات المستثناة</h4>
-
-    <p>
-      لا يُقبل استرجاع العطور أو العود
-      المفتوحة أو المستخدمة لمجرد تغيير الرأي،
-      مع عدم الإخلال بحقوق المستهلك النظامية.
-    </p>
-
-    <h4>المنتجات التالفة أو الخاطئة</h4>
-
-    <p>
-      في حال وصول منتج تالف أو مختلف
-      عن الطلب، يرجى التواصل معنا
-      وتقديم رقم الطلب وصورة توضح المشكلة.
-    </p>
-
-    <p>
-      تتم معالجة هذه الحالات وفق الأنظمة
-      المعمول بها في المملكة العربية السعودية.
-    </p>
-
-    <p>
-      لا تحد هذه السياسة من أي حقوق
-      إلزامية مقررة للمستهلك نظامًا.
-    </p>
-
+  <div class="es-pol-grid">
+    <a class="es-pol" href="policies.html#shipping-policy"><strong>الشحن والتوصيل</strong><span>نجران 25 ر.س، باقي المدن 30 ر.س، ومجاني من 300 ر.س</span></a>
+    <a class="es-pol" href="policies.html#return-policy"><strong>الاستبدال والاسترجاع</strong><span>خلال 7 أيام من الاستلام، مع نموذج طلب سريع</span></a>
+    <a class="es-pol" href="policies.html#privacy-policy"><strong>الخصوصية</strong><span>كيف نتعامل مع بياناتك ونحميها</span></a>
+    <a class="es-pol" href="policies.html#contact" id="contact"><strong>تواصل معنا</strong><span>واتساب: <bdi dir="ltr">+966535317713</bdi></span></a>
   </div>
-
-  <div class="policy-box" id="privacy-policy">
-
-    <h3>🔒 سياسة الخصوصية</h3>
-
-    <p>
-      يحترم متجر عطور إيسانس خصوصية العملاء،
-      ويلتزم بالتعامل مع بياناتهم الشخصية
-      وفق الأنظمة المعمول بها في المملكة.
-    </p>
-
-    <h4>البيانات التي قد نجمعها</h4>
-
-    <ul>
-      <li>اسم العميل.</li>
-      <li>رقم الهاتف.</li>
-      <li>المدينة وعنوان التوصيل.</li>
-      <li>تفاصيل الطلبات والمنتجات.</li>
-    </ul>
-
-    <h4>استخدام البيانات</h4>
-
-    <p>
-      تُستخدم البيانات لأغراض معالجة الطلبات،
-      والتوصيل، والتواصل مع العملاء،
-      وتقديم خدمة ما بعد البيع.
-    </p>
-
-    <h4>مشاركة البيانات</h4>
-
-    <p>
-      قد تتم مشاركة البيانات اللازمة للتوصيل
-      مع المندوب أو شركة الشحن،
-      بالقدر المطلوب لتنفيذ الخدمة.
-    </p>
-
-    <h4>حماية البيانات</h4>
-
-    <p>
-      نعمل على اتخاذ الإجراءات التقنية
-      والتنظيمية المناسبة لحماية بيانات العملاء
-      من الوصول أو الاستخدام غير المصرح به.
-    </p>
-
-    <h4>حقوق العملاء</h4>
-
-    <p>
-      يمكن التواصل معنا للاستفسار عن
-      البيانات الشخصية أو طلب تصحيحها
-      أو حذفها، وفق الحالات التي يسمح بها النظام.
-    </p>
-
-    <p>
-      المتجر حاليًا في المرحلة التجريبية.
-      يُرجى عدم إدخال بيانات شخصية حقيقية
-      في الطلبات التجريبية.
-    </p>
-
-    <p>
-      ستُراجع سياسة الخصوصية قبل
-      الإطلاق الرسمي لتوضيح تفاصيل
-      الاحتفاظ بالبيانات ومعالجتها.
-    </p>
-
-  </div>
-
-  <div class="policy-box" id="terms-policy">
-
-    <h3>📋 الشروط والأحكام</h3>
-
-    <p>
-      باستخدام متجر عطور إيسانس،
-      يوافق الزائر على الالتزام
-      بالشروط والأحكام المعلنة.
-    </p>
-
-    <ul>
-      <li>جميع الأسعار المعروضة بالريال السعودي.</li>
-      <li>تخضع المنتجات للتوفر في المخزون.</li>
-      <li>تُوضح رسوم الشحن قبل تأكيد الطلب.</li>
-      <li>تُطبق سياسة الاستبدال والاسترجاع المعلنة مع مراعاة حقوق المستهلك النظامية.</li>
-      <li>يُمنع إساءة استخدام الموقع أو إرسال طلبات وهمية بقصد الإضرار.</li>
-    </ul>
-
-    <h4>حالة المتجر الحالية</h4>
-
-    <p>
-      المتجر قيد التجهيز والاختبار،
-      والطلبات الحالية تجريبية فقط.
-    </p>
-
-    <p>
-      لا يتم تحصيل أي مبالغ،
-      ولا تُعد الطلبات التجريبية
-      طلبات شراء فعلية.
-    </p>
-
-  </div>
-
-  <div class="policy-box" id="contact">
-
-    <h3>📱 تواصل معنا</h3>
-
-    <p>
-      نسعد بخدمتكم والإجابة عن استفساراتكم.
-    </p>
-
-    <p>
-      خدمة العملاء والاستبدال والاسترجاع:
-    </p>
-
-    <p>
-      <a
-        href="https://wa.me/966535317713"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        💬 التواصل عبر واتساب
-      </a>
-    </p>
-
-    <p>رقم التواصل: +966535317713</p>
-
-    <p>
-      الموقع: نجران، المملكة العربية السعودية.
-    </p>
-
-  </div>
-
+  <p class="es-pol-more"><a href="policies.html">عرض جميع السياسات ←</a></p>
 </section>
 
 <!-- ========================================
@@ -2023,14 +1825,14 @@ header.es-header nav a:hover{background:var(--es-soft)!important;color:var(--es-
     </div>
     <div>
       <h4>السياسات</h4>
-      <a href="#shipping-policy">الشحن والتوصيل</a>
-      <a href="#return-policy">الاستبدال والاسترجاع</a>
-      <a href="#privacy-policy">الخصوصية</a>
-      <a href="#terms-policy">الشروط والأحكام</a>
+      <a href="policies.html#shipping-policy">الشحن والتوصيل</a>
+      <a href="policies.html#return-policy">الاستبدال والاسترجاع</a>
+      <a href="policies.html#privacy-policy">الخصوصية</a>
+      <a href="policies.html#terms-policy">الشروط والأحكام</a>
     </div>
     <div>
       <h4>تواصل</h4>
-      <a href="#contact">تواصل معنا</a>
+      <a href="policies.html#contact">تواصل معنا</a>
       <p>الشحن من نجران إلى جميع مدن المملكة.</p>
     </div>
   </div>
@@ -3144,6 +2946,12 @@ async function loadProducts(){
 
     products = rows.map(p => ({
       ...p,
+      image_url:
+        typeof p.image_url === 'string' &&
+        /^https:\/\/hassan7615\.github\.io\//i.test(p.image_url) &&
+        !p.image_url.includes('?')
+          ? p.image_url + '?v=20261114c'
+          : p.image_url,
       stock:Math.max(
         0,
         Math.floor(Number(p.stock) || 0)

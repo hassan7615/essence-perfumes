@@ -294,13 +294,86 @@ body.dark .order-filter.selected strong{color:#f1d18b}
 body{font-family:"Tajawal",system-ui,sans-serif}
 h1,h2,h3{font-family:"El Messiri","Tajawal",serif}
 button,input,select,textarea{font-family:inherit}
+/* =========================================================
+   ESSENCE ADMIN THEME (visual only)
+   ========================================================= */
+:root{--ea-bg:#f6f1e9;--ea-surface:#fff;--ea-soft:#f1e9dc;--ea-ink:#2a211b;--ea-muted:#7a6d61;--ea-line:#e6dccd;--ea-gold:#a8834d;--ea-gold-2:#c9a66b;--ea-deep:#231a15;--ea-ok:#2f7a4f;--ea-bad:#a33a2a;--ea-shadow:0 14px 34px -22px rgba(42,33,27,.45);
+  --page:var(--ea-bg);--surface:var(--ea-surface);--text:var(--ea-ink);--muted:var(--ea-muted);--line:var(--ea-line);--field:#fff;--soft:var(--ea-soft)}
+body.dark{--ea-bg:#16110e;--ea-surface:#211a15;--ea-soft:#2b221c;--ea-ink:#f1e8dc;--ea-muted:#b9a993;--ea-line:#3b3027;--ea-deep:#0f0b09;--ea-shadow:0 14px 34px -22px rgba(0,0,0,.8);
+  --page:var(--ea-bg);--surface:var(--ea-surface);--text:var(--ea-ink);--muted:var(--ea-muted);--line:var(--ea-line);--field:#1a1410;--soft:var(--ea-soft)}
+body{background:var(--ea-bg)!important;color:var(--ea-ink)!important;-webkit-font-smoothing:antialiased}
+
+header{position:sticky;top:0;z-index:40;background:var(--ea-deep)!important;color:#f3e8d8!important;padding:12px clamp(14px,4vw,40px)!important;box-shadow:0 1px 0 rgba(201,166,107,.25)}
+.ea-brand{display:flex;flex-direction:column;line-height:1.1}
+.ea-brand b{font-family:"El Messiri",serif;font-size:22px;font-weight:700;color:#f6ecdf}
+.ea-brand small{font-family:"Cormorant Garamond",serif;letter-spacing:.32em;font-size:10.5px;color:var(--ea-gold-2);font-weight:600}
+.ea-brand em{font-style:normal;font-family:"Tajawal",sans-serif;font-size:12px;color:#c7b59d;margin-top:3px;letter-spacing:0}
+header .header-actions button{border-radius:999px!important;padding:9px 16px!important;font-size:14px}
+.theme-toggle{background:transparent!important;border:1px solid rgba(201,166,107,.45)!important;color:#ead9bf!important}
+#logout{background:var(--ea-gold)!important;color:#fff!important}
+
+main{max-width:1240px!important;margin:28px auto!important;padding:0 clamp(12px,3vw,24px)!important}
+h2{font-family:"El Messiri",serif;font-size:1.3rem!important;color:var(--ea-ink)}
+.card{background:var(--ea-surface)!important;border:1px solid var(--ea-line)!important;border-radius:18px!important;box-shadow:var(--ea-shadow)!important}
+button{background:var(--ea-deep)!important;color:#f7efe3!important;border:1px solid transparent!important;border-radius:12px!important;font-weight:500;transition:background .2s,transform .15s}
+body.dark button{background:#3a2d22!important}
+button:hover:not(:disabled){background:var(--ea-gold)!important;transform:translateY(-1px)}
+.secondary{background:var(--ea-soft)!important;color:var(--ea-ink)!important;border-color:var(--ea-line)!important}
+.danger,.cancel-button{background:var(--ea-bad)!important;color:#fff!important}
+input:not([type=checkbox]):not([type=range]):not([type=color]),select,textarea{border-radius:12px!important;border:1px solid var(--ea-line)!important;background:var(--field)!important;color:var(--ea-ink)!important}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--ea-gold-2)!important;outline-offset:1px}
+
+/* tabs as segmented control */
+.tabs{background:var(--ea-surface);border:1px solid var(--ea-line);border-radius:16px;padding:6px;gap:6px!important;margin:6px 0 20px;box-shadow:var(--ea-shadow)}
+.tab{flex:1;background:transparent!important;color:var(--ea-ink)!important;border:0!important;border-radius:12px!important;padding:12px 14px!important}
+.tab:hover:not(:disabled){background:var(--ea-soft)!important;transform:none}
+.tab.active{background:var(--ea-deep)!important;color:#f7efe3!important}
+body.dark .tab.active{background:var(--ea-gold)!important}
+
+/* stats */
+.stats{gap:14px!important}
+.stat{border-radius:16px!important;padding:16px 18px!important;text-align:right}
+.stat span{color:var(--ea-muted);font-size:14px}
+.stat strong{font-family:"El Messiri",serif;font-size:1.9rem!important;color:var(--ea-ink)!important;margin-top:2px}
+.order-filter{background:var(--ea-surface)!important;color:var(--ea-ink)!important;border:1px solid var(--ea-line)!important}
+.order-filter.selected{background:var(--ea-soft)!important;border-color:var(--ea-gold)!important;box-shadow:inset 0 0 0 1px var(--ea-gold)!important}
+.order-filter.selected strong{color:var(--ea-gold)!important}
+
+.session-info{background:var(--ea-surface)!important;border:1px solid var(--ea-line)!important;border-radius:999px!important;color:var(--ea-muted)!important;display:inline-flex!important;padding:7px 16px!important;margin-bottom:12px;font-size:14px}
+.session-info.warning{background:#fff4dd!important;color:#7a5410!important;border-color:#f0d49a!important}
+.pill{border-radius:999px!important}
+.status-badge{border-radius:999px!important;padding:3px 12px!important}
+.order,.inventory-card,.coupon-card{border-radius:16px!important}
+.coupon-card{border-right:4px solid var(--ea-gold)!important}
+.product-name{color:var(--ea-ink)!important;font-family:"El Messiri",serif}
+.product-photo,.image-preview{border-radius:12px!important;background:var(--ea-soft)!important}
+
+/* login */
+#login{max-width:430px!important;margin:56px auto!important;padding:30px 28px!important;text-align:right}
+.ea-login-mark{width:64px;height:64px;border-radius:50%;margin:0 auto 10px;display:grid;place-items:center;background:var(--ea-deep);color:var(--ea-gold-2);font-family:"Cormorant Garamond",serif;font-size:38px;line-height:1}
+.ea-login-title{text-align:center;margin-bottom:16px}
+.ea-login-title h2{margin:0}
+.ea-login-title p{margin:4px 0 0;color:var(--ea-muted);font-size:14px}
+.ea-pass{position:relative}
+.ea-pass input{padding-left:84px!important}
+.ea-eye{position:absolute;left:6px;top:50%;transform:translateY(-50%);background:var(--ea-soft)!important;color:var(--ea-ink)!important;border:1px solid var(--ea-line)!important;padding:6px 10px!important;font-size:13px;border-radius:9px!important}
+.ea-eye:hover:not(:disabled){transform:translateY(-50%)!important;background:var(--ea-soft)!important}
+.ea-caps{color:#8a5a10;font-size:13px;margin:6px 0 0;min-height:1em}
+#loginButton{width:100%;margin-top:16px;padding:13px!important;font-size:16px}
+.ea-secure{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--ea-muted);background:var(--ea-soft);border-radius:12px;padding:10px 12px;margin-top:14px}
+
+@media(max-width:700px){
+  header{flex-wrap:wrap}
+  .tabs{flex-direction:column}
+  .stat{min-width:calc(50% - 8px)!important}
+}
 </style>
 </head>
 
 <body>
 
 <header>
-  <h1>🌿 عطور إيسانس | لوحة التحكم</h1>
+  <h1 class="ea-brand"><b>عطور إيسانس</b><small>ESSENCE PERFUMES</small><em>لوحة التحكم</em></h1>
   <div class="header-actions">
     <button id="themeToggle" class="theme-toggle" type="button">
       🌙 الوضع الداكن
@@ -314,20 +387,29 @@ button,input,select,textarea{font-family:inherit}
 <main>
 
 <section id="login" class="card">
-  <h2>دخول المدير</h2>
+  <div class="ea-login-mark" aria-hidden="true">E</div>
+  <div class="ea-login-title">
+    <h2>دخول المدير</h2>
+    <p>لوحة تحكم عطور إيسانس</p>
+  </div>
   <form id="loginForm">
     <label>
       البريد الإلكتروني
       <input id="email" type="email" autocomplete="username" required>
     </label>
-    <label>
-      كلمة المرور
+    <label for="password">كلمة المرور</label>
+    <div class="ea-pass">
       <input id="password" type="password"
              autocomplete="current-password" required>
-    </label>
+      <button type="button" class="ea-eye" id="togglePassword" aria-controls="password" aria-pressed="false">إظهار</button>
+    </div>
+    <p class="ea-caps" id="capsNote" aria-live="polite"></p>
     <button id="loginButton" type="submit">دخول</button>
   </form>
-  <p class="muted">الدخول مخصص للحساب المعتمد في جدول المديرين.</p>
+  <div class="ea-secure">
+    <span aria-hidden="true">🔒</span>
+    <span>الدخول مخصص للحساب المعتمد في جدول المديرين. كلمة المرور لا تُحفظ في الصفحة، وتنتهي الجلسة تلقائيًا بعد ساعة.</span>
+  </div>
 </section>
 
 <p id="message" role="status" aria-live="polite"></p>
@@ -3147,8 +3229,37 @@ $('showAllOrders').onclick=()=>{
 $('refresh').onclick=loadOrders;
 $('refreshProducts').onclick=loadProducts;
 
+/* حماية الدخول: إظهار/إخفاء، تنبيه Caps Lock، وتهدئة بعد المحاولات الفاشلة */
+const LOCK_KEY='essence_admin_login_guard_v1';
+const readGuard=()=>{try{const g=JSON.parse(localStorage.getItem(LOCK_KEY)||'{}');return {fails:Number(g.fails)||0,until:Number(g.until)||0};}catch(_){return {fails:0,until:0};}};
+const writeGuard=g=>{try{localStorage.setItem(LOCK_KEY,JSON.stringify(g));}catch(_){}};
+const lockLeft=()=>Math.max(0,Math.ceil((readGuard().until-Date.now())/1000));
+function noteFailure(){
+  const g=readGuard();g.fails+=1;
+  if(g.fails>=5){g.until=Date.now()+Math.min(900,60*Math.pow(2,g.fails-5))*1000;}
+  writeGuard(g);
+}
+$('togglePassword').onclick=()=>{
+  const p=$('password');const show=p.type==='password';
+  p.type=show?'text':'password';
+  $('togglePassword').textContent=show?'إخفاء':'إظهار';
+  $('togglePassword').setAttribute('aria-pressed',String(show));
+};
+const capsCheck=e=>{
+  if(typeof e.getModifierState==='function')
+    $('capsNote').textContent=e.getModifierState('CapsLock')?'تنبيه: زر Caps Lock مفعّل.':'';
+};
+$('password').addEventListener('keydown',capsCheck);
+$('password').addEventListener('keyup',capsCheck);
+
 $('loginForm').onsubmit=async e=>{
   e.preventDefault();
+
+  const wait=lockLeft();
+  if(wait>0){
+    msg('محاولات كثيرة غير ناجحة. حاول بعد '+wait+' ثانية.','error');
+    return;
+  }
 
   $('loginButton').disabled=true;
   msg('جارٍ تسجيل الدخول...');
@@ -3161,8 +3272,12 @@ $('loginForm').onsubmit=async e=>{
       });
 
     $('password').value='';
+    $('password').type='password';
+    $('togglePassword').textContent='إظهار';
 
-    if(error)throw error;
+    if(error){noteFailure();throw error;}
+
+    writeGuard({fails:0,until:0});
 
     localStorage.setItem(
       SESSION_KEY,
