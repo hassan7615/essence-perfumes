@@ -1,2 +1,2 @@
-# alreef-perfumes
+# essence-perfumes
 Essence Perfumes Online Store
