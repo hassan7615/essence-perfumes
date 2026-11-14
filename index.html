@@ -10,6 +10,9 @@
 <meta property="og:site_name" content="عطور إيسانس | Essence Perfumes">
 <meta property="og:description" content="عطور إيسانس – عطور وعود | Perfumes &amp; Oud">
 
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23231a15'/%3E%3Ctext x='32' y='46' text-anchor='middle' font-family='Georgia,serif' font-size='40' fill='%23c9a66b'%3EE%3C/text%3E%3C/svg%3E">
+<link rel="canonical" href="https://hassan7615.github.io/essence-perfumes/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Store","name":"عطور إيسانس | Essence Perfumes","url":"https://hassan7615.github.io/essence-perfumes/","telephone":"+966535317713","address":{"@type":"PostalAddress","addressLocality":"نجران","addressCountry":"SA"},"currenciesAccepted":"SAR"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&family=Tajawal:wght@400;500;700&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
@@ -1555,6 +1558,61 @@ header.es-header nav a:hover{background:var(--es-soft)!important;color:var(--es-
   .grid,.category-block .grid{grid-template-columns:1fr!important}
 }
 @media(prefers-reduced-motion:reduce){.es-tile-img,.es-hero-frame img,.card{transition:none!important}.card .product-image,.card .bottle{transform:none!important}}
+
+/* ---- ESSENCE features: search, favorites, sort, bottom bar, hero showcase ---- */
+.es-tools{display:flex;align-items:center;gap:10px}
+.es-search{display:flex;align-items:center;gap:8px;background:var(--es-bg);border:1px solid var(--es-line);border-radius:999px;padding:0 14px;height:44px;min-width:240px;transition:border-color .2s,box-shadow .2s}
+.es-search:focus-within{border-color:var(--es-gold-2);box-shadow:0 0 0 3px rgba(201,166,107,.18)}
+.es-search svg,.es-icon-btn svg,.es-bottombar svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.es-search svg{color:var(--es-muted)}
+.es-search input{border:0!important;background:transparent!important;outline:0!important;font:inherit;color:var(--es-ink);width:100%;padding:0!important;box-shadow:none!important}
+.es-icon-btn{position:relative;display:inline-flex!important;align-items:center;justify-content:center;width:44px;height:44px;padding:0!important;background:var(--es-surface)!important;color:var(--es-ink)!important;border:1px solid var(--es-line)!important}
+.es-icon-btn .es-count{position:absolute;top:-6px;inset-inline-start:-6px;min-width:20px;height:20px;font-size:11px}
+.es-icon-btn[aria-pressed="true"]{background:var(--es-deep)!important;color:var(--es-gold-2)!important;border-color:var(--es-deep)!important}
+
+.es-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:18px 0 0;padding:12px 16px;background:var(--es-surface);border:1px solid var(--es-line);border-radius:16px;text-align:right}
+.es-result{margin:0;color:var(--es-muted);font-size:14px}
+.es-toolbar-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.es-chip{background:var(--es-bg)!important;color:var(--es-ink)!important;border:1px solid var(--es-line)!important;padding:8px 16px!important;font-size:14px}
+.es-chip[aria-pressed="true"]{background:var(--es-deep)!important;color:#f7efe3!important;border-color:var(--es-deep)!important}
+.es-sort{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--es-muted)}
+.es-sort select{font:inherit;color:var(--es-ink);background:var(--es-bg);border:1px solid var(--es-line);border-radius:999px;padding:8px 14px}
+.es-empty{grid-column:1/-1;text-align:center;color:var(--es-muted);padding:28px 10px;background:var(--es-surface);border:1px dashed var(--es-line);border-radius:16px}
+.category-block.es-hide,.card.es-hide{display:none!important}
+
+.card{position:relative}
+.es-fav{position:absolute;top:20px;inset-inline-end:20px;z-index:3;width:38px;height:38px;border-radius:50%!important;padding:0!important;display:grid!important;place-items:center;background:rgba(255,255,255,.92)!important;color:var(--es-ink)!important;border:1px solid var(--es-line)!important;box-shadow:0 6px 14px -8px rgba(0,0,0,.35)!important}
+.es-fav svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round}
+.es-fav[aria-pressed="true"]{color:#b4374b!important}
+.es-fav[aria-pressed="true"] svg{fill:currentColor}
+.es-fav:hover:not(:disabled){transform:scale(1.08)!important;background:#fff!important}
+
+.es-hero-show{background:linear-gradient(160deg,#2b2019,#4a3527 55%,#2b2019)}
+.es-hero-show img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.04);transition:opacity 1.1s ease,transform 6s ease}
+.es-hero-show img.on{opacity:1;transform:scale(1)}
+.es-hero-dots{position:absolute;bottom:-26px;inset-inline:0;display:flex;justify-content:center;gap:8px}
+.es-hero-dots i{width:8px;height:8px;border-radius:50%;background:var(--es-line);transition:.3s}
+.es-hero-dots i.on{background:var(--es-gold);width:22px;border-radius:6px}
+
+.es-bottombar{display:none}
+@media(max-width:860px){
+  .es-search{min-width:0;flex:1;height:40px}
+  .es-tools{width:100%;order:2}
+  header.es-header .es-cart-btn{padding:8px 14px!important}
+}
+@media(max-width:600px){
+  .es-tools .es-icon-btn,.es-tools .es-cart-btn{display:none!important}
+  .es-bottombar{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;bottom:0;inset-inline:0;z-index:70;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-top:1px solid var(--es-line);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+  .es-bottombar a,.es-bottombar button{display:flex!important;flex-direction:column;align-items:center;gap:2px;background:none!important;border:0!important;color:var(--es-ink)!important;font-size:11.5px;text-decoration:none;padding:6px 0!important;border-radius:12px!important;box-shadow:none!important}
+  .es-bottombar b{display:inline-block;min-width:16px;padding:0 4px;border-radius:8px;background:var(--es-gold-2);color:var(--es-deep);font-size:10px}
+  .es-bottombar [aria-pressed="true"]{color:var(--es-gold)!important}
+  body{padding-bottom:70px}
+  .cart{display:none!important}
+  .alreef-assistant-launcher{bottom:84px!important}
+  .es-fav{top:14px;inset-inline-end:14px;width:34px;height:34px}
+  .es-toolbar{padding:10px 12px}
+  .es-hero-dots{bottom:-20px}
+}
 </style>
 </head>
 
@@ -1584,11 +1642,21 @@ header.es-header nav a:hover{background:var(--es-soft)!important;color:var(--es-
     <a href="#policies">السياسات</a>
   </nav>
 
+  <div class="es-tools">
+  <label class="es-search" for="esSearch">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="esSearch" type="search" placeholder="ابحث عن عطر أو عود..." autocomplete="off" aria-label="البحث في المنتجات">
+  </label>
+  <button id="esFavBtn" class="es-icon-btn" type="button" aria-label="المفضلة" aria-pressed="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>
+    <span class="es-count" id="esFavCount">0</span>
+  </button>
   <button id="headerCart" class="es-cart-btn" aria-label="فتح السلة">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>
     <span>السلة</span>
     <span class="es-count" id="count">0</span>
   </button>
+  </div>
 </header>
 
 <!-- ========================================
@@ -1635,7 +1703,12 @@ header.es-header nav a:hover{background:var(--es-soft)!important;color:var(--es-
   </div>
 
   <div class="es-hero-art" id="esHeroArt" aria-hidden="true">
-    <div class="es-hero-frame"><div class="es-hero-lockup"><span class="es-hero-mono">E</span><span class="es-hero-word">ESSENCE</span><span class="es-hero-sub">عطور وعود</span></div></div>
+    <div class="es-hero-frame es-hero-show">
+      <img src="oud_alreef.jpg?v=20261114e" alt="" class="on" decoding="async">
+      <img src="ward_alreef.jpg?v=20261114e" alt="" decoding="async" loading="lazy">
+      <img src="misk_alreef.jpg?v=20261114e" alt="" decoding="async" loading="lazy">
+    </div>
+    <div class="es-hero-dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
   </div>
 </section>
 
@@ -1688,6 +1761,20 @@ header.es-header nav a:hover{background:var(--es-soft)!important;color:var(--es-
     <a href="#perfumes">العطور</a>
     <a href="#oud">العود</a>
     <a href="#accessories">الإكسسوارات</a>
+  </div>
+
+  <div class="es-toolbar">
+    <p class="es-result" id="esResult" aria-live="polite"></p>
+    <div class="es-toolbar-actions">
+      <button type="button" class="es-chip" id="esFavFilter" aria-pressed="false">المفضلة فقط</button>
+      <label class="es-sort">ترتيب
+        <select id="esSort">
+          <option value="default">الافتراضي</option>
+          <option value="asc">السعر: من الأقل</option>
+          <option value="desc">السعر: من الأعلى</option>
+        </select>
+      </label>
+    </div>
   </div>
 
   <div id="items" aria-live="polite">
@@ -1845,6 +1932,13 @@ header.es-header nav a:hover{background:var(--es-soft)!important;color:var(--es-
 <!-- ========================================
      FLOATING CART
 ======================================== -->
+
+<nav class="es-bottombar" aria-label="تنقل سريع">
+  <a href="#home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z"/></svg><span>الرئيسية</span></a>
+  <button type="button" id="esBarSearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>بحث</span></button>
+  <button type="button" id="esBarFav"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span>المفضلة</span></button>
+  <button type="button" id="esBarCart"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg><span>السلة <b id="esBarCount">0</b></span></button>
+</nav>
 
 <button class="cart" id="floatingCart">
   🛒 السلة: <span id="total">0</span> ر.س
@@ -2361,7 +2455,7 @@ let appliedCoupon = '';
 const $ = id => document.getElementById(id);
 
 const money = n => Number(n).toLocaleString(
-  'ar-SA',
+  'ar-SA-u-nu-latn',
   { maximumFractionDigits:2 }
 );
 
@@ -2950,7 +3044,7 @@ async function loadProducts(){
         typeof p.image_url === 'string' &&
         /^https:\/\/hassan7615\.github\.io\//i.test(p.image_url) &&
         !p.image_url.includes('?')
-          ? p.image_url + '?v=20261114d'
+          ? p.image_url + '?v=20261114e'
           : p.image_url,
       stock:Math.max(
         0,
@@ -4281,6 +4375,152 @@ addAssistantMessage(
   }
   new MutationObserver(fill).observe(items, {childList:true, subtree:true});
   fill();
+})();
+</script>
+<script>
+/* ESSENCE features: search, sort, favorites, bottom bar, hero showcase (display only; cart logic untouched) */
+(function(){
+  var FAV_KEY = 'essence_favorites_v1';
+  var favs = [];
+  try { favs = JSON.parse(localStorage.getItem(FAV_KEY) || '[]'); if(!Array.isArray(favs)) favs = []; } catch(_) { favs = []; }
+  function saveFavs(){ try { localStorage.setItem(FAV_KEY, JSON.stringify(favs)); } catch(_) {} }
+
+  var items = document.getElementById('items');
+  var search = document.getElementById('esSearch');
+  var sortSel = document.getElementById('esSort');
+  var favFilterBtn = document.getElementById('esFavFilter');
+  var favBtn = document.getElementById('esFavBtn');
+  var result = document.getElementById('esResult');
+  var favOnly = false;
+  var heart = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>';
+
+  function norm(s){ return String(s||'').toLowerCase().replace(/[ً-ْـ]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').trim(); }
+  function productFor(card){
+    var list = (typeof products !== 'undefined' && Array.isArray(products)) ? products : [];
+    var name = card.getAttribute('aria-label');
+    for (var i=0;i<list.length;i++){ if(list[i].name === name) return list[i]; }
+    return null;
+  }
+  function cards(){ return items ? Array.prototype.slice.call(items.querySelectorAll('.card')) : []; }
+
+  function updateCounts(){
+    var c = document.getElementById('esFavCount'); if(c) c.textContent = favs.length;
+    var bar = document.getElementById('esBarCount'); var cc = document.getElementById('count');
+    if(bar && cc) bar.textContent = cc.textContent;
+  }
+
+  function decorate(){
+    cards().forEach(function(card, idx){
+      if(card.dataset.esReady) return;
+      card.dataset.esReady = '1';
+      if(!card.dataset.esOrder) card.dataset.esOrder = String(idx);
+      var p = productFor(card);
+      var id = p ? String(p.id) : card.getAttribute('aria-label');
+      card.dataset.esId = id;
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'es-fav'; b.innerHTML = heart;
+      var on = favs.indexOf(id) !== -1;
+      b.setAttribute('aria-pressed', String(on));
+      b.setAttribute('aria-label', (on?'إزالة من':'إضافة إلى') + ' المفضلة: ' + card.getAttribute('aria-label'));
+      b.addEventListener('click', function(e){
+        e.stopPropagation();
+        var k = favs.indexOf(id);
+        if(k === -1) favs.push(id); else favs.splice(k,1);
+        saveFavs();
+        var now = favs.indexOf(id) !== -1;
+        b.setAttribute('aria-pressed', String(now));
+        b.setAttribute('aria-label', (now?'إزالة من':'إضافة إلى') + ' المفضلة: ' + card.getAttribute('aria-label'));
+        updateCounts();
+        if(favOnly) apply();
+      });
+      card.appendChild(b);
+    });
+  }
+
+  function apply(){
+    if(!items) return;
+    var q = norm(search && search.value);
+    var shown = 0, total = 0;
+    var grids = items.querySelectorAll('.grid');
+    Array.prototype.forEach.call(grids, function(grid){
+      var list = Array.prototype.slice.call(grid.querySelectorAll('.card'));
+      var mode = sortSel ? sortSel.value : 'default';
+      list.sort(function(a,b){
+        if(mode === 'default') return Number(a.dataset.esOrder) - Number(b.dataset.esOrder);
+        var pa = productFor(a), pb = productFor(b);
+        var va = pa ? Number(pa.price) : 0, vb = pb ? Number(pb.price) : 0;
+        return mode === 'asc' ? va - vb : vb - va;
+      });
+      list.forEach(function(c){ grid.appendChild(c); });
+      var visible = 0;
+      list.forEach(function(c){
+        total++;
+        var p = productFor(c);
+        var hay = norm((c.getAttribute('aria-label')||'') + ' ' + (p ? (p.description||'') + ' ' + (p.category||'') : ''));
+        var ok = (!q || hay.indexOf(q) !== -1) && (!favOnly || favs.indexOf(c.dataset.esId) !== -1);
+        c.classList.toggle('es-hide', !ok);
+        if(ok){ visible++; shown++; }
+      });
+      var block = grid.closest('.category-block');
+      if(block) block.classList.toggle('es-hide', visible === 0);
+    });
+    var empty = items.querySelector('.es-empty');
+    if(shown === 0 && total > 0){
+      if(!empty){ empty = document.createElement('p'); empty.className = 'es-empty'; items.appendChild(empty); }
+      empty.textContent = favOnly && !q ? 'لا توجد منتجات في المفضلة بعد. اضغط على القلب في أي منتج لإضافته.' : 'لا توجد نتائج مطابقة لبحثك.';
+    } else if(empty){ empty.remove(); }
+    if(result){
+      result.textContent = (q || favOnly) ? ('عدد النتائج: ' + shown + ' من ' + total) : (total ? ('عدد المنتجات: ' + total) : '');
+    }
+    var pressed = String(favOnly);
+    if(favFilterBtn) favFilterBtn.setAttribute('aria-pressed', pressed);
+    if(favBtn) favBtn.setAttribute('aria-pressed', pressed);
+    var barFav = document.getElementById('esBarFav'); if(barFav) barFav.setAttribute('aria-pressed', pressed);
+  }
+
+  function goProducts(){ var s = document.getElementById('products'); if(s) s.scrollIntoView({behavior:'smooth', block:'start'}); }
+  function toggleFav(){ favOnly = !favOnly; apply(); goProducts(); }
+
+  var t;
+  if(search){
+    search.addEventListener('input', function(){ clearTimeout(t); t = setTimeout(function(){ apply(); }, 120); });
+    search.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); apply(); goProducts(); } });
+  }
+  if(sortSel) sortSel.addEventListener('change', apply);
+  if(favFilterBtn) favFilterBtn.addEventListener('click', function(){ favOnly = !favOnly; apply(); });
+  if(favBtn) favBtn.addEventListener('click', toggleFav);
+  var bs = document.getElementById('esBarSearch');
+  if(bs) bs.addEventListener('click', function(){ window.scrollTo({top:0, behavior:'smooth'}); setTimeout(function(){ search && search.focus(); }, 350); });
+  var bf = document.getElementById('esBarFav'); if(bf) bf.addEventListener('click', toggleFav);
+  var bc = document.getElementById('esBarCart'); if(bc) bc.addEventListener('click', function(){ var h = document.getElementById('headerCart'); if(h) h.click(); });
+
+  if(items){
+    var busy = false;
+    new MutationObserver(function(){
+      if(busy) return; busy = true;
+      requestAnimationFrame(function(){
+        var fresh = cards().some(function(c){ return !c.dataset.esReady; });
+        if(fresh){ decorate(); apply(); }
+        busy = false;
+      });
+    }).observe(items, {childList:true, subtree:true});
+  }
+  var countEl = document.getElementById('count');
+  if(countEl) new MutationObserver(updateCounts).observe(countEl, {childList:true, characterData:true, subtree:true});
+  updateCounts();
+
+  /* hero showcase */
+  var show = document.querySelector('.es-hero-show');
+  if(show){
+    var imgs = show.querySelectorAll('img'), dots = document.querySelectorAll('.es-hero-dots i'), k = 0;
+    if(imgs.length > 1 && !matchMedia('(prefers-reduced-motion: reduce)').matches){
+      setInterval(function(){
+        imgs[k].classList.remove('on'); if(dots[k]) dots[k].classList.remove('on');
+        k = (k + 1) % imgs.length;
+        imgs[k].classList.add('on'); if(dots[k]) dots[k].classList.add('on');
+      }, 4200);
+    }
+  }
 })();
 </script>
 </body>
