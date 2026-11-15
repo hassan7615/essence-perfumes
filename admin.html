@@ -404,6 +404,23 @@ body.dark .tab.active{background:var(--ea-gold)!important}
 body.dark .order .cancel-button{border-color:#6b2f26!important}
 body.dark .status-badge{filter:brightness(.92)}
 @media(max-width:600px){.orders{grid-template-columns:1fr!important}.ea-meta{grid-template-columns:1fr}}
+
+/* ---- KPIs + order actions ---- */
+.ea-head-actions{display:flex;gap:8px;flex-wrap:wrap}
+.ea-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:14px 0}
+.ea-kpi{background:var(--ea-deep);color:#efe4d3;border-radius:18px;padding:16px 18px;box-shadow:var(--ea-shadow)}
+.ea-kpi span{display:block;font-size:13px;color:#cdbca4}
+.ea-kpi strong{display:block;font-family:"El Messiri",serif;font-size:1.7rem;color:#f6ead6;margin:4px 0 2px}
+.ea-kpi small{font-size:12px;color:#a9977f}
+.ea-kpi-alert{background:linear-gradient(135deg,#7a4d12,#a8834d)}
+.ea-kpi-alert span,.ea-kpi-alert small{color:#f7e6c8}
+body.dark .ea-kpi{background:#2b221c}
+.ea-order-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ea-act{display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:14px;border-radius:12px;padding:10px!important}
+.ea-wa{background:#1f8f55;color:#fff}
+.ea-wa:hover{background:#18784a}
+.ea-order-actions .ea-act:only-child{grid-column:1/-1}
+@media(max-width:900px){.ea-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 
@@ -474,10 +491,17 @@ body.dark .status-badge{filter:brightness(.92)}
   <section id="ordersSection">
     <div class="row">
       <h2>📦 الطلبات</h2>
-      <button id="refresh" class="secondary" type="button">
-        🔄 تحديث الطلبات
-      </button>
+      <div class="ea-head-actions">
+        <button id="exportOrders" class="secondary" type="button">
+          تصدير Excel
+        </button>
+        <button id="refresh" class="secondary" type="button">
+          🔄 تحديث الطلبات
+        </button>
+      </div>
     </div>
+
+    <div id="kpis" class="ea-kpis" aria-label="ملخص المبيعات"></div>
 
     <div id="stats" class="stats"></div>
 
@@ -1114,8 +1138,97 @@ function selectOrderFilter(status){
 }
 
 /* عرض الإحصائيات كأزرار */
+function renderKpis(){
+  const box=$('kpis');
+  if(!box)return;
+  box.replaceChildren();
+  const live=loadedOrders.filter(o=>o.status!=='cancelled');
+  const revenue=live.reduce((s,o)=>s+(Number(o.total_amount)||0),0);
+  const avg=live.length?revenue/live.length:0;
+  const weekAgo=Date.now()-7*864e5;
+  const week=loadedOrders.filter(o=>o.created_at&&new Date(o.created_at).getTime()>=weekAgo).length;
+  const todo=loadedOrders.filter(o=>o.status==='pending'||o.status==='processing').length;
+  const items=[
+    ['إجمالي المبيعات',money(revenue),'بدون الطلبات الملغية'],
+    ['متوسط قيمة الطلب',money(avg),live.length+' طلب فعّال'],
+    ['طلبات آخر 7 أيام',String(week),'من آخر الطلبات المحمّلة'],
+    ['بحاجة لإجراء',String(todo),'قيد الانتظار أو التجهيز']
+  ];
+  for(const [t,v,s] of items){
+    const c=el('div',undefined,'ea-kpi'+(t==='بحاجة لإجراء'&&todo>0?' ea-kpi-alert':''));
+    c.append(el('span',t),el('strong',v),el('small',s));
+    box.append(c);
+  }
+}
+
+function exportOrdersCsv(){
+  if(!loadedOrders.length){msg('لا توجد طلبات للتصدير.','error');return;}
+  const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
+  const head=['رقم الطلب','التاريخ','العميل','الجوال','المدينة','العنوان','الحالة','الكوبون','الخصم','الشحن','الإجمالي'];
+  const lines=[head.map(q).join(',')];
+  for(const o of loadedOrders){
+    lines.push([
+      orderCode(o),
+      o.created_at?new Date(o.created_at).toLocaleString('en-GB'):'',
+      o.customer_name,o.customer_phone,o.city,o.address,
+      statuses[o.status]||o.status,o.coupon_code||'',
+      Number(o.discount_amount)||0,Number(o.shipping_fee)||0,Number(o.total_amount)||0
+    ].map(q).join(','));
+  }
+  const blob=new Blob(['\ufeff'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='essence-orders-'+new Date().toISOString().slice(0,10)+'.csv';
+  document.body.append(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+  msg('تم تصدير '+loadedOrders.length+' طلب.','success');
+}
+
+function waLink(phone,code){
+  let d=String(phone||'').replace(/\D/g,'');
+  if(d.startsWith('00'))d=d.slice(2);
+  if(d.startsWith('05'))d='966'+d.slice(1);
+  else if(d.startsWith('5')&&d.length===9)d='966'+d;
+  if(!/^9665\d{8}$/.test(d))return null;
+  return 'https://wa.me/'+d+'?text='+encodeURIComponent('مرحبًا، معك عطور إيسانس بخصوص طلبك '+code+'.');
+}
+
+function printInvoice(o,rows,names){
+  const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const code=orderCode(o);
+  let body='';
+  let sub=0;
+  for(const it of rows){
+    const qn=Number(it.quantity)||0, pr=Number(it.unit_price)||0; sub+=qn*pr;
+    body+='<tr><td>'+esc(names.get(String(it.product_id).toLowerCase())||it.product_id)+'</td><td>'+qn+'</td><td>'+esc(money(pr))+'</td><td>'+esc(money(qn*pr))+'</td></tr>';
+  }
+  const disc=Number(o.discount_amount)||0;
+  const html='<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>فاتورة '+esc(code)+'</title>'+
+  '<link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@600;700&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">'+
+  '<style>body{font-family:Tajawal,Tahoma,sans-serif;color:#2a211b;margin:32px;max-width:760px}h1,h2{font-family:"El Messiri",serif;margin:0}'+
+  '.top{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #c9a66b;padding-bottom:14px;margin-bottom:18px}'+
+  '.brand small{display:block;letter-spacing:.3em;color:#a8834d;font-size:11px}.meta{font-size:14px;line-height:1.9;text-align:left}'+
+  'table{width:100%;border-collapse:collapse;margin:16px 0}th,td{border-bottom:1px solid #e4d9c8;padding:10px;text-align:right}th{background:#f7f2ea}'+
+  '.sum{width:300px;margin-inline-start:auto}.sum div{display:flex;justify-content:space-between;padding:4px 0}.sum .t{font-weight:700;font-size:18px;border-top:2px solid #2a211b;margin-top:6px;padding-top:8px}'+
+  '.foot{margin-top:28px;color:#776a5e;font-size:13px}@media print{button{display:none}}</style></head><body>'+
+  '<div class="top"><div class="brand"><h1>عطور إيسانس</h1><small>ESSENCE PERFUMES</small></div>'+
+  '<div class="meta"><b>فاتورة '+esc(code)+'</b><br>'+esc(o.created_at?new Date(o.created_at).toLocaleString('ar-SA-u-nu-latn'):'')+'<br>الحالة: '+esc(statuses[o.status]||o.status)+'</div></div>'+
+  '<h2 style="font-size:18px">بيانات العميل</h2><p>'+esc(o.customer_name)+' — <span dir="ltr">'+esc(o.customer_phone)+'</span><br>'+esc(o.city)+' — '+esc(o.address)+'</p>'+
+  '<table><thead><tr><th>المنتج</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead><tbody>'+body+'</tbody></table>'+
+  '<div class="sum"><div><span>المجموع</span><span>'+esc(money(sub))+'</span></div><div><span>الشحن</span><span>'+esc(money(o.shipping_fee))+'</span></div>'+
+  (disc>0?'<div><span>الخصم ('+esc(o.coupon_code||'')+')</span><span>− '+esc(money(disc))+'</span></div>':'')+
+  '<div class="t"><span>الإجمالي</span><span>'+esc(money(o.total_amount))+'</span></div></div>'+
+  '<p class="foot">شكرًا لتسوقكم من عطور إيسانس — نجران، المملكة العربية السعودية — واتساب: <span dir="ltr">+966535317713</span></p>'+
+  '<button onclick="print()" style="margin-top:14px;padding:10px 22px;border-radius:999px;border:0;background:#231a15;color:#fff;font:inherit;cursor:pointer">طباعة</button>'+
+  '</body></html>';
+  const w=window.open('','_blank');
+  if(!w){msg('اسمح بالنوافذ المنبثقة لطباعة الفاتورة.','error');return;}
+  w.document.open();w.document.write(html);w.document.close();
+}
+
 function renderOrderStats(){
   $('stats').replaceChildren();
+  renderKpis();
 
   const filters=[
     ['all','إجمالي الطلبات',loadedOrders.length],
@@ -1428,6 +1541,19 @@ async function loadOrders(){
       };
 
       card.append(save);
+
+      const acts=el('div',undefined,'ea-order-actions');
+      const wa=waLink(o.customer_phone,code);
+      if(wa){
+        const a=el('a','واتساب العميل','ea-act ea-wa');
+        a.href=wa;a.target='_blank';a.rel='noopener noreferrer';
+        acts.append(a);
+      }
+      const pr=el('button','طباعة الفاتورة','secondary ea-act');
+      pr.type='button';
+      pr.onclick=()=>printInvoice(o,rows,productNames);
+      acts.append(pr);
+      card.append(acts);
 
       if(['pending','processing'].includes(o.status)){
         const cancel=el(
@@ -3273,6 +3399,7 @@ $('showAllOrders').onclick=()=>{
   selectOrderFilter('all');
 };
 
+$('exportOrders').onclick=exportOrdersCsv;
 $('refresh').onclick=loadOrders;
 $('refreshProducts').onclick=loadProducts;
 
